@@ -1,7 +1,11 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DOCKER_POSTGRES_DATABASE || 'example', process.env.DOCKER_POSTGRES_USERNAME || 'postgres', process.env.DOCKER_POSTGRES_PASSWORD || '', {
-  host: process.env.DOCKER_POSTGRES_HOST || '127.0.0.1',
-  dialect: 'postgres',
+const config = require('../config/config');
+
+const currentConfig = config[process.env.NODE_ENV || 'development'];
+
+const sequelize = new Sequelize(currentConfig.database, currentConfig.username, currentConfig.password, {
+  host: currentConfig.host,
+  dialect: currentConfig.dialect,
   pool: {
     max: 5,
     min: 0,
